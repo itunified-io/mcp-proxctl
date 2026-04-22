@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { ToolDefinition } from "./plugin.js";
 
-// ─── proxctl tools (25) ─────────────────────────────────────────────
+// ─── proxctl tools (27) ─────────────────────────────────────────────
 // Each tool maps 1:1 to a `proxctl <domain> <action>` subcommand.
 // `target` is the env name (or path to env.yaml) for the workflow.
 
@@ -195,6 +195,21 @@ export const tools: ToolDefinition[] = [
     inputSchema: { target },
     domain: "workflow",
     action: "verify",
+  },
+
+  {
+    name: "proxctl_workflow_profile_list",
+    description: "List shipped workflow profiles (oracle-rac-2node, pg-single, host-only)",
+    inputSchema: {},
+    domain: "workflow",
+    action: "profile list",
+  },
+  {
+    name: "proxctl_workflow_profile_show",
+    description: "Print a shipped workflow profile's YAML content",
+    inputSchema: { name: z.string().describe("Profile name (e.g. oracle-rac-2node)") },
+    domain: "workflow",
+    action: "profile show",
   },
 
   // license

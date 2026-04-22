@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2026.04.11.3 — 2026-04-19
+
+### Added — Phase 6 (#2)
+- Tool: `proxctl_workflow_profile_list` — list shipped profiles (oracle-rac-2node, pg-single, host-only)
+- Tool: `proxctl_workflow_profile_show` — print a shipped profile's YAML content
+- Matches proxctl v2026.04.11.6 (MultiNodeWorkflow + profile library)
+
 ## v2026.04.11.2 — 2026-04-22
 
 ### Changed (BREAKING)

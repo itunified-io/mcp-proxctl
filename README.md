@@ -1,6 +1,6 @@
 # @itunified.io/mcp-proxctl
 
-> MCP server for `proxctl` — 25 tools wrapping the Proxmox provisioning CLI via `execFile`
+> MCP server for `proxctl` — 27 tools wrapping the Proxmox provisioning CLI via `execFile`
 
 [![npm](https://img.shields.io/npm/v/@itunified.io/mcp-proxctl)](https://www.npmjs.com/package/@itunified.io/mcp-proxctl)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
@@ -56,7 +56,7 @@ npm install -g @itunified.io/mcp-proxctl
 }
 ```
 
-## Tool Catalog (25)
+## Tool Catalog (27)
 
 | Tool | proxctl | Confirm |
 |------|---------|---------|
@@ -84,6 +84,8 @@ npm install -g @itunified.io/mcp-proxctl
 | `proxctl_workflow_down` | `workflow down` | double-confirm |
 | `proxctl_workflow_status` | `workflow status` | none |
 | `proxctl_workflow_verify` | `workflow verify` | none |
+| `proxctl_workflow_profile_list` | `workflow profile list` | none |
+| `proxctl_workflow_profile_show` | `workflow profile show` | none |
 | `proxctl_license_status` | `license status` | none |
 
 ## Skills

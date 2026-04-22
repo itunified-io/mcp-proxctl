@@ -1,0 +1,14 @@
+src/
+*.ts
+!dist/**/*.d.ts
+tsconfig.json
+.eslintrc.json
+.prettierrc
+.claude/
+.github/
+.mcpregistry_*
+.env
+*.pem
+*.key
+credentials*
+node_modules/

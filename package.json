@@ -1,0 +1,36 @@
+{
+  "name": "@itunified.io/mcp-proxclt",
+  "version": "2026.4.11-1",
+  "description": "MCP server for proxclt — 25 tools wrapping the proxclt Proxmox provisioning CLI via execFile",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "mcp-proxclt": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src/",
+    "prepublishOnly": "node scripts/prepublish-check.js",
+    "start": "node dist/index.js",
+    "start:sse": "node dist/index.js --sse"
+  },
+  "keywords": ["mcp", "proxmox", "proxclt", "provisioning", "vm", "kickstart", "ai"],
+  "author": "ITUNIFIED GmbH",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itunified-io/mcp-proxclt.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.25.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  }
+}

@@ -4,7 +4,7 @@ import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 
-const BINARY = process.env.PROXCLT_BINARY || "proxclt";
+const BINARY = process.env.PROXCTL_BINARY || "proxctl";
 
 export interface DbxResult {
   success: boolean;
@@ -19,13 +19,13 @@ export interface DbxExecOptions {
 }
 
 /**
- * Execute a `proxclt` command via execFile (no shell, no injection).
+ * Execute a `proxctl` command via execFile (no shell, no injection).
  *
- * Maps (domain, action, args) onto the proxclt CLI:
- *   proxclt <domain> <action> [--k v ...] [--target <t>] [--format json]
+ * Maps (domain, action, args) onto the proxctl CLI:
+ *   proxctl <domain> <action> [--k v ...] [--target <t>] [--format json]
  *
  * All actual work (Proxmox API calls, license check, audit) is done by
- * the `proxclt` Go binary. This TypeScript layer only handles MCP
+ * the `proxctl` Go binary. This TypeScript layer only handles MCP
  * protocol, Zod schemas, and output shaping.
  */
 export async function dbxExec(

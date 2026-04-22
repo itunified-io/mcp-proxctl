@@ -4,7 +4,7 @@ import { createPlugin } from "./plugin.js";
 import { tools } from "./tools.js";
 
 const pkg = {
-  name: "mcp-proxclt",
+  name: "mcp-proxctl",
   version: "2026.4.11-1",
 };
 
@@ -18,10 +18,10 @@ const runtime = createMcpRuntime({
   port,
 });
 
-// Self-register: standalone mode (proxclt domain)
+// Self-register: standalone mode (proxctl domain)
 const plugin = createPlugin({
-  name: "proxclt",
-  domain: "proxclt",
+  name: "proxctl",
+  domain: "proxctl",
   requiredBundle: "free",
   tools,
 });

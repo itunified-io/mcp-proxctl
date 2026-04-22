@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2026.04.11.2 — 2026-04-22
+
+### Changed (BREAKING)
+- Renamed MCP server from mcp-proxclt → mcp-proxctl (matches upstream CLI rename)
+- npm package: `@itunified.io/mcp-proxctl`
+- Tool prefix: `proxctl_*` (was `proxclt_*`) — 25 tools renamed
+- Binary wrapped: `proxctl` (was `proxclt`)
+- Env var: `PROXCTL_BINARY` (was `PROXCLT_BINARY`)
+
 ## v2026.04.11.1 — 2026-04-22
 
 Initial scaffold. 25 tools wrapping the `proxclt` Proxmox provisioning CLI via `execFile`.

@@ -1,6 +1,6 @@
 # @itunified.io/mcp-proxctl
 
-> MCP server for `proxctl` — 27 tools wrapping the Proxmox provisioning CLI via `execFile`
+> MCP server for `proxctl` — 34 tools wrapping the Proxmox provisioning CLI via `execFile`
 
 [![npm](https://img.shields.io/npm/v/@itunified.io/mcp-proxctl)](https://www.npmjs.com/package/@itunified.io/mcp-proxctl)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
@@ -56,10 +56,17 @@ npm install -g @itunified.io/mcp-proxctl
 }
 ```
 
-## Tool Catalog (27)
+## Tool Catalog (34)
 
 | Tool | proxctl | Confirm |
 |------|---------|---------|
+| `proxctl_stack_new` | `stack new` | none |
+| `proxctl_stack_list` | `stack list` | none |
+| `proxctl_stack_use` | `stack use` | none |
+| `proxctl_stack_current` | `stack current` | none |
+| `proxctl_stack_add` | `stack add` | none |
+| `proxctl_stack_remove` | `stack remove` | none |
+| `proxctl_stack_show` | `stack show` | none |
 | `proxctl_config_validate` | `config validate` | none |
 | `proxctl_config_render` | `config render` | none |
 | `proxctl_vm_create` | `vm create` | standard |
@@ -90,7 +97,14 @@ npm install -g @itunified.io/mcp-proxctl
 
 ## Skills
 
-Claude Code skills live in the [proxctl repo](https://github.com/itunified-io/proxctl) under `.claude/skills/` and will be published alongside the 1.0 release.
+Stack-level orchestration skills ship with this MCP adapter under `.claude/skills/`. Additional lower-level skills live in the [proxctl repo](https://github.com/itunified-io/proxctl).
+
+| Skill | Description |
+|-------|-------------|
+| `/proxctl-stack-up` | Provision every VM in a stack end-to-end (validate → plan → confirm → up → poll). |
+| `/proxctl-stack-down` | Tear down every VM in a stack (double-confirm + verify + ISO cleanup hint). |
+| `/proxctl-stack-snapshot` | Snapshot every VM in a stack with a shared name for consistent set-level restore. |
+| `/proxctl-stack-kickstart` | Regen + rebuild + re-upload kickstart ISOs for every node in a stack (no VM mutation). |
 
 ## Development
 

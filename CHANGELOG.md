@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2026.04.11.4 — 2026-04-22
+
+### Changed (BREAKING)
+- Tool prefix: `proxctl_env_*` → `proxctl_stack_*` (7 tools) — matches upstream proxctl v2026.04.11.8 CLI rename
+
+### Added — /stack-* skills
+- /proxctl-stack-up, /proxctl-stack-down, /proxctl-stack-snapshot, /proxctl-stack-kickstart
+
 ## v2026.04.11.3 — 2026-04-19
 
 ### Added — Phase 6 (#2)

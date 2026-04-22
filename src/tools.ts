@@ -1,13 +1,13 @@
 import { z } from "zod";
 import type { ToolDefinition } from "./plugin.js";
 
-// ─── proxctl tools (27) ─────────────────────────────────────────────
+// ─── proxctl tools (34) ─────────────────────────────────────────────
 // Each tool maps 1:1 to a `proxctl <domain> <action>` subcommand.
-// `target` is the env name (or path to env.yaml) for the workflow.
+// `target` is the stack/env name (or path to env.yaml) for the workflow.
 
 const target = z
   .string()
-  .describe("Environment name or path to env.yaml for the proxctl workflow");
+  .describe("Stack name or path to env.yaml for the proxctl workflow");
 
 const name = z
   .string()
@@ -16,7 +16,67 @@ const name = z
 
 const baseSchema = { target, name };
 
+const stackName = z
+  .string()
+  .describe("Stack bookmark name (entry in ~/.proxctl/stacks.yaml)");
+
+const stackNameOptional = z
+  .string()
+  .optional()
+  .describe("Stack bookmark name (optional — defaults to current stack)");
+
 export const tools: ToolDefinition[] = [
+  // stack (bookmark management, matches proxctl v2026.04.11.8 stack verb)
+  {
+    name: "proxctl_stack_new",
+    description: "Scaffold a new stack directory (env.yaml + layer files)",
+    inputSchema: { name: stackName },
+    domain: "stack",
+    action: "new",
+  },
+  {
+    name: "proxctl_stack_list",
+    description: "List bookmarked stacks from ~/.proxctl/stacks.yaml",
+    inputSchema: {},
+    domain: "stack",
+    action: "list",
+  },
+  {
+    name: "proxctl_stack_use",
+    description: "Switch the current stack bookmark",
+    inputSchema: { name: stackName },
+    domain: "stack",
+    action: "use",
+  },
+  {
+    name: "proxctl_stack_current",
+    description: "Print the currently selected stack bookmark",
+    inputSchema: {},
+    domain: "stack",
+    action: "current",
+  },
+  {
+    name: "proxctl_stack_add",
+    description: "Bookmark a stack (local path or git ref) in ~/.proxctl/stacks.yaml",
+    inputSchema: { name: stackName },
+    domain: "stack",
+    action: "add",
+  },
+  {
+    name: "proxctl_stack_remove",
+    description: "Remove a stack bookmark from ~/.proxctl/stacks.yaml",
+    inputSchema: { name: stackName },
+    domain: "stack",
+    action: "remove",
+  },
+  {
+    name: "proxctl_stack_show",
+    description: "Show resolved paths + sha of a stack bookmark",
+    inputSchema: { name: stackNameOptional },
+    domain: "stack",
+    action: "show",
+  },
+
   // config
   {
     name: "proxctl_config_validate",

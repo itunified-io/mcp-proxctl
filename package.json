@@ -1,7 +1,7 @@
 {
   "name": "@itunified.io/mcp-proxctl",
-  "version": "2026.4.11-3",
-  "description": "MCP server for proxctl — 27 tools wrapping the proxctl Proxmox provisioning CLI via execFile",
+  "version": "2026.4.11-4",
+  "description": "MCP server for proxctl — 34 tools wrapping the proxctl Proxmox provisioning CLI via execFile",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

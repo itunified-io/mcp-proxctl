@@ -67,3 +67,22 @@ Agent: (workflow up) → (polls status) → done
        | rac1  | 10.10.0.101   | running |
        | rac2  | 10.10.0.102   | running |
 ```
+
+## Plan RAG (infrastructure ADR-0096 v3)
+
+This skill follows the canonical plan template documented in
+`itunified-io/infrastructure/.claude/skills/_shared/PLAN_TEMPLATE.md`:
+
+- Enter plan mode first (`EnterPlanMode`); write the canonical plan
+  to the active session plan file; call `ExitPlanMode` and wait for
+  operator approval before any state-changing tool runs.
+- Reset TodoWrite at start with all planned steps as `pending`.
+- Use shared step IDs across all 3 surfaces:
+  - Plan file row: `| 5 | <name> | 🔄 | <detail> |`
+  - TodoWrite: `"/<skill> step 5 — <name>"`
+  - Bash description: `"[/<skill> step 5] <imperative>"`
+- When invoked from a parent orchestrator (`/lab-up`, etc.), this
+  skill's step IDs append to the parent's:
+  `"[/lab-up step 3 / proxctl-stack-up step 2] …"`.
+- Update the session plan file in place at every phase boundary +
+  material side effect; mirror to `~/.lab/<skill>/plan-current.md`.

@@ -22,17 +22,20 @@ Iteration aid for kickstart authoring: regenerates the kickstart file, builds th
 
 2. **For each node in the stack**
    1. `proxctl_kickstart_generate` — render the kickstart/autoinstall file from env config.
-   2. `proxctl_kickstart_build_iso` — embed the kickstart file into a bootable ISO.
-   3. `proxctl_kickstart_upload` — upload the built ISO to the Proxmox storage configured in `env.yaml`.
+   2. **REQUIRED: validate ks.cfg has `--ignoremissing` on `%packages`** (per `/lab-up` Rule 5: anaconda hangs on missing packages without this flag — caught in proxctl#39 v2026.04.30.2). If absent: hard-fail this node, do not build the ISO.
+   3. `proxctl_kickstart_build_iso` — embed the kickstart file into a bootable ISO.
+   4. **REQUIRED: post-build OEMDRV-label check.** Anaconda only auto-discovers kickstart from a CD with volume label `OEMDRV` (case-sensitive). If the built ISO has any other volume label (`KS_<HOST>`, `kickstart`, etc.), Anaconda silently falls back to the interactive language menu — install hangs forever. Verify via `xorriso -indev <iso> | grep "Volume id"` or `blkid` on the file. If label != `OEMDRV`: hard-fail this node, do not upload.
+   5. **Upload via canonical MCP path.** Prefer `proxmox_storage_upload` from mcp-proxmox-enterprise v2026.04.30.2+ (closes lab-up Rule 3 gap, no proxctl API creds needed). Fall back to `proxctl_kickstart_upload` only if that MCP tool is unavailable. **DO NOT** fall through to ad-hoc curl/scp — yesterday's session reused stale ISOs with wrong volid because there was no canonical path; that bug is closed.
    - Collect pass / fail per node; continue on failure.
 
 3. **Report**
-   - Emit a table: `<node> | <distro> | <iso path> | <storage volid> | <ok|error>`.
+   - Emit a table: `<node> | <distro> | <iso path> | <volid label> | <storage volid> | <ok|error>`.
    - Remind the user this skill does NOT re-boot any VM — use `/proxctl-stack-up` or `proxctl_boot_configure_first_boot` to actually pick up the new ISO.
 
 ## Constraints
 
 - **No VM mutation** — this skill MUST NOT call any `proxctl_vm_*` or `proxctl_workflow_*` tool.
+- **No reuse of existing kickstart ISOs without verification.** If an existing ISO is on the storage with the same volid, fetch its volume label via `proxmox_ssh_exec` (or equivalent). Only skip rebuild if BOTH the volume label is `OEMDRV` AND the ks.cfg content matches the freshly-rendered output. Otherwise rebuild.
 - Fresh ISOs overwrite the previous upload at the same storage path. That is the intended iteration behaviour.
 
 ## Failure Modes
@@ -40,7 +43,9 @@ Iteration aid for kickstart authoring: regenerates the kickstart file, builds th
 | Failure | Response |
 |---------|----------|
 | `kickstart_generate` fails | Print the template error; skip build/upload for that node. |
+| `%packages --ignoremissing` missing from rendered ks.cfg | **Hard fail this node** — Rule 5 violation. Surface a clear error pointing operator at the kickstart template. |
 | `build_iso` fails | Surface the mkisofs/xorriso error; continue with other nodes. |
+| Built ISO volume label != `OEMDRV` | **Hard fail this node.** This was the dbx-control 2026-04-30 / ext3+ext4 2026-05-01 hang bug. The xorriso command must use `-volid OEMDRV` exactly. |
 | `upload` fails | Most often auth or storage-full; surface the error; continue. |
 
 ## Example

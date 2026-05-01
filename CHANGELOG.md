@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2026.05.01.1 — 2026-05-01
+
+### docs(skill): proxctl-stack-kickstart hardening — OEMDRV-label + --ignoremissing checks (#6)
+
+Hardens the `/proxctl-stack-kickstart` skill against the failure mode caught
+during `/lab-up` runs on 2026-04-30 (dbx-control) and 2026-05-01 (ext3+ext4):
+agent fell through canonical proxctl tools to ad-hoc xorriso, accidentally
+labeling the ISO `KS_<HOST>` instead of `OEMDRV`. Anaconda only auto-discovers
+kickstart from `OEMDRV`-labeled CDs, so install silently hung at the language
+menu.
+
+Skill changes:
+- **Required pre-build check**: validate rendered ks.cfg has `%packages
+  --ignoremissing` (per lab-up Rule 5). Hard-fail node if missing.
+- **Required post-build check**: validate built ISO volume label == `OEMDRV`
+  before upload. Hard-fail node otherwise.
+- **Upload path**: prefer `proxmox_storage_upload` from mcp-proxmox-enterprise
+  v2026.04.30.2+ (canonical MCP path; no proxctl API creds needed). Fall back
+  to `proxctl_kickstart_upload` only if MCP unavailable. **Never** fall
+  through to ad-hoc curl/scp.
+- **Reuse policy**: never reuse an existing storage-side ISO without verifying
+  volume label + ks.cfg content match the fresh render.
+
 ## v2026.04.11.4 — 2026-04-22
 
 ### Changed (BREAKING)
